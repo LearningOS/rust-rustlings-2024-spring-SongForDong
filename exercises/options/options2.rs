@@ -3,7 +3,7 @@
 // Execute `rustlings hint options2` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
+
 
 #[cfg(test)]
 mod tests {
@@ -40,8 +40,11 @@ mod tests {
         //    assert_eq!(integer, cursor);
         //    cursor -= 1;
         //}
-        while let Some(integer) = optional_integers.pop(){
-            if (let)
+        while let Some(integers) = optional_integers.pop(){
+            if let Some(integer) = integers{
+                assert_eq!(integer, cursor);
+                cursor -= 1;
+            }
         }
 
         assert_eq!(cursor, 0);
