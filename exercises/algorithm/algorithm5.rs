@@ -3,9 +3,9 @@
 	This problem requires you to implement a basic BFS algorithm
 */
 
-//I AM NOT DONE
-use std::collections::VecDeque;
 
+use std::collections::VecDeque;
+use std::collections::HashMap;
 // Define a graph
 struct Graph {
     adj: Vec<Vec<usize>>, 
@@ -29,8 +29,22 @@ impl Graph {
     fn bfs_with_return(&self, start: usize) -> Vec<usize> {
         
 		//TODO
-
+        let mut st = HashMap::new();
         let mut visit_order = vec![];
+        let mut q = VecDeque::new();
+        q.push_back(start);
+        
+        st.insert(start, true);
+        while !q.is_empty() {
+            let t = q.pop_front();
+            visit_order.push(t.unwrap());
+            for &i in self.adj[t.unwrap()].iter() {
+                if !st.contains_key(&i) {
+                    q.push_back(i);
+                    st.insert(i, true);
+                }
+            }
+        }
         visit_order
     }
 }
