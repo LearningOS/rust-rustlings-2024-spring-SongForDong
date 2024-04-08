@@ -2,7 +2,7 @@
 	single linked list merge
 	This problem requires you to merge two ordered singly linked lists into one ordered singly linked list
 */
-// I AM NOT DONE
+
 
 use std::fmt::{self, Display, Formatter};
 use std::ptr::NonNull;
@@ -29,13 +29,12 @@ struct LinkedList<T> {
     end: Option<NonNull<Node<T>>>,
 }
 
-impl<T> Default for LinkedList<T> {
+impl<T: std::cmp::PartialOrd + Clone> Default for LinkedList<T> {
     fn default() -> Self {
         Self::new()
     }
 }
-
-impl<T> LinkedList<T> {
+impl<T: std::cmp::PartialOrd + Clone> LinkedList<T> {
     pub fn new() -> Self {
         Self {
             length: 0,
@@ -43,7 +42,6 @@ impl<T> LinkedList<T> {
             end: None,
         }
     }
-
     pub fn add(&mut self, obj: T) {
         let mut node = Box::new(Node::new(obj));
         node.next = None;
@@ -69,14 +67,51 @@ impl<T> LinkedList<T> {
             },
         }
     }
-	pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
+    pub fn merge(list_a:LinkedList<T>,list_b:LinkedList<T>) -> Self
 	{
 		//TODO
-		Self {
-            length: 0,
-            start: None,
-            end: None,
+		//Self {
+        //    length: 0,
+        //    start: None,
+        //    end: None,
+        //
+        
+        let mut res : Self = Self::new();
+        let (mut list1, mut list2) = (list_a.start, list_b.start); 
+
+        // After google, I know a new method to unpack ----- map() 
+        
+        // In clourse, it will crash if no '&'  before round brakets.
+        //let (v1, v2) =  unsafe {((list1.map(|x| &(*x.as_ptr()))),  list2.map(|x| &(*x.as_ptr()))) };  
+        
+        unsafe{
+            while list1.is_some() && list2.is_some() 
+            {
+                let list1_v = list1.unwrap().as_ref().val.clone();
+                let list2_v = list2.unwrap().as_ref().val.clone();
+
+                if list1_v < list2_v {
+                    res.add(list1_v.clone());
+                    list1 = (*list1.unwrap().as_ptr()).next;
+                } else {
+                    res.add(list2_v.clone());
+                    list2 = (*list2.unwrap().as_ptr()).next;
+                }
+            }
+            while list1.is_some(){
+                res.add(list1.unwrap().as_ref().val.clone());
+                list1 = (*list1.unwrap().as_ptr()).next;
+            }
+            while list2.is_some(){
+                res.add(list2.unwrap().as_ref().val.clone());
+                list2 = (*list2.unwrap().as_ptr()).next;
+            }
         }
+          
+
+
+//        Self{length: 0, start: None, end: None}
+        res
 	}
 }
 
