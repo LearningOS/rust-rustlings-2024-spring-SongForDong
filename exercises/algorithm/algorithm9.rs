@@ -35,6 +35,8 @@ where
         self.len() == 0
     }
 
+    // I dont understand know what the hell i typed. Well, you know, this code pass the test.
+    // C-O-N-F-U-S-I-N-G
     pub fn add(&mut self, value: T) {
         //TODO
         self.items.push(value);
